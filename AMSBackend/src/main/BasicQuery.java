@@ -2,19 +2,11 @@ package main;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map.Entry;
-import java.util.NavigableMap;
-import java.util.TreeMap;
 
 
 // We need to import the java.sql package to use JDBC
@@ -23,18 +15,8 @@ public class BasicQuery
 {		
 	private Connection con = null;
 	private static final String url = "jdbc:oracle:thin:@dbhost.ugrad.cs.ubc.ca:1522:ug";
-	private static final String username = "ora_m0h7";
-	private static final String password = "a70054093";
-	
-	// schema definitions
-	// make sure the insertion order is the same as the column order
-	// type must be one of NUMBER, STRING, or TYPE
-	public static LinkedHashMap<String,String> TYPES_SCHEMA = new LinkedHashMap<String, String>();
-	static {
-		TYPES_SCHEMA.put("ID", "NUMBER");
-		TYPES_SCHEMA.put("NAME", "STRING");
-		TYPES_SCHEMA.put("TYPE_DATE", "DATE");
-	}
+	private static final String username = "";
+	private static final String password = "";
 
 	/**
 	 * If no connection has been made to database, will start a new one
@@ -61,13 +43,12 @@ public class BasicQuery
 
 		return con;
 	}
-	
-	// TODO: CloseConnection
 
 	/**
-	 * This method will not work with Dates
-	 * @param tableName
-	 * @param tuple
+	 * Insert a tuple into a table. This method will not work with Dates
+	 * 
+	 * @param tableName Name of the table to insert values into
+	 * @param tuple Array of Strings with values to insert (must be in order of table columns)
 	 */
 	public void insertTuple(String tableName, String[] tuple) {
 		try {
@@ -89,15 +70,14 @@ public class BasicQuery
 		}
 		
 	}
-
+	
 	/**
-	 * Insert tuple into specified table
-	 * <p>
-	 * ex. insertTuple (branch, {20, Richmond, 23 No.3 Road, Richmond, 5552331})
+	 * Insert a tuple into specified table. This method can support Dates
 	 * 
-	 * @param tableName Name of table
-	 * @param values Array of values in the tuple
-	 * @throws Exception 
+	 * @param tableName Name of table to insert tuple into
+	 * @param schema HashMap of a table schema (column name, data type)
+	 * @param tuple Array of String values (must be in order of table columns)
+	 * @throws Exception if schema type is unrecognized
 	 */
 	public void insertTuple2(String tableName, LinkedHashMap<String, String> schema, String[] tuple) throws Exception {
 		PreparedStatement ps;
@@ -147,19 +127,21 @@ public class BasicQuery
 			} catch (SQLException e) {
 				rollback();
 				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			} 
 	}
 	
-	
-	public void deleteTuple(String tableName, HashMap<String, String> conditions, String op) {
+	/**
+	 * Delete tuple from table
+	 * @param tableName Name of table to delete from
+	 * @param conditions String array of clauses
+	 * @param op link between conditions ("AND" or "OR")
+	 */
+	public void deleteTuple(String tableName, String[] conditions, String op) {
 		
 		try {
 			String q = "DELETE FROM " + tableName + " WHERE ";
-			for (String col : conditions.keySet()) {
-				q += col + "=\'" + conditions.get(col) + "\'" + op; 
+			for (int i=0; i<conditions.length; i++) {
+				q += conditions[i] + " " + op + " "; 
 			}
 			q = q.substring(0, q.lastIndexOf(op));
 			

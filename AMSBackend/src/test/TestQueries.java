@@ -4,8 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import main.BasicQuery;
+import java.util.ArrayList;
 
 public class TestQueries {
 	/* methods for testing and debugging */
@@ -18,7 +17,8 @@ public class TestQueries {
 	public void executeSpecialQuery(String str) {
 		try {
 			Statement s = con.createStatement();
-			
+			s.execute(str);
+			con.commit();
 			
 		} catch (SQLException e) {
 			rollback();
@@ -69,25 +69,27 @@ public class TestQueries {
 	}
 
 	/* for debugging */
-	public void showAllTables(){
+	public ArrayList<String> getAllTableNames(){
+		ArrayList<String> tables = new ArrayList<String>();
 		Statement s;
 		try {
 			s = con.createStatement();
 			ResultSet rs = s.executeQuery("SELECT table_name FROM user_tables");
 			con.commit();
 
-			System.out.println("All Tables:");
 			while (rs.next()) {
-				System.out.print(rs.getString(1) + " ");
+				tables.add(rs.getString(1));
 			}
-			System.out.println("\n");
+			
 		} catch (SQLException e) {
 			rollback();
 			e.printStackTrace();
 		}
+		
+		return tables;
 	}
 	
-	private void rollback() {
+	protected void rollback() {
 		try {
 			con.rollback();
 		} catch (SQLException e) {
