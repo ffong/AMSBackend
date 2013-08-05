@@ -64,12 +64,7 @@ public class BasicQueryTest extends BasicQuery {
 		if (tq.getAllTableNames().contains(notypes_tablename)) {
 			tq.executeSpecialQuery("DROP TABLE " + notypes_tablename);
 		}
-		try {
-			con.close();
-		} catch (SQLException e) {
-			tq.rollback();
-			e.printStackTrace();
-		}
+		BasicQuery.closeConnection();
 	}
 	
 	

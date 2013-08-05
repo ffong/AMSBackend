@@ -17,10 +17,10 @@ import javax.lang.model.type.UnknownTypeException;
 
 public class BasicQuery 
 {		
-	private static Connection con = null;
+	public static Connection con = null;
 	private static final String url = "jdbc:oracle:thin:@dbhost.ugrad.cs.ubc.ca:1522:ug";
-	private static final String username = "ora_m0h7";
-	private static final String password = "a70054093";
+	private static final String username = "";
+	private static final String password = "";
 
 	/**
 	 * If no connection has been made to database, will start a new one
@@ -46,6 +46,14 @@ public class BasicQuery
 		}
 
 		return con;
+	}
+	
+	public static void closeConnection() {
+		try {
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

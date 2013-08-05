@@ -18,7 +18,6 @@ public class PurchaseQueryTest {
 	
 	private static Connection con;
 	private static TestQueries tq;
-	private static Purchase pq;
 	
 	@BeforeClass
 	public static void setUp() {
@@ -28,11 +27,7 @@ public class PurchaseQueryTest {
 	
 	@AfterClass
 	public static void tearDown() {
-		try {
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		BasicQuery.closeConnection();
 	}
 	
 	@Test
@@ -40,19 +35,6 @@ public class PurchaseQueryTest {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
 		Date d = new java.util.Date();
 		System.out.println(formatter.format(d));
-	}
-	
-	//@Test
-	public void getReceiptIdTest() {
-		try {
-			String id = pq.getNextReceiptId();
-			System.out.println(id);
-			Assert.assertNotNull(id);	
-			
-		} catch (SQLException e) {
-			Assert.fail();
-			e.printStackTrace();
-		}
 	}
 	
 	@Test
