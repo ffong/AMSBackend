@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import main.BasicQuery;
 
-public class BasicQueryTest {
+public class BasicQueryTest extends BasicQuery {
 	
 	private static final String types_tablename = "JUNIT_TYPES";
 	private static final String notypes_tablename = "JUNIT";
@@ -33,7 +33,7 @@ public class BasicQueryTest {
 	@BeforeClass
 	public static void setUp() {
 		bq = new BasicQuery();
-		con = bq.getConnection();
+		con = BasicQuery.getConnection();
 		tq = new TestQueries(con);
 		
 		// create a testing table
@@ -51,7 +51,7 @@ public class BasicQueryTest {
 				"test_date date)");
 
 		tq.executeSpecialQuery("CREATE table " + notypes_tablename + 
-				"(test_id varchar2(10) not null primary key," + 
+				"(test_id varchar2(10)," + 
 				"test_name varchar2(15))");
 	}
 	
@@ -81,6 +81,7 @@ public class BasicQueryTest {
 			int rowCount = tq.getRowCount(types_tablename);
 			bq.insertTuple2(types_tablename, TYPES_SCHEMA, new String[] {"1", "Mike", "25-DEC-2005"});
 			Assert.assertTrue(tq.getRowCount(types_tablename) > rowCount);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -99,11 +100,16 @@ public class BasicQueryTest {
 		bq.insertTuple(notypes_tablename, new String[] {"30", "Joe"});
 		Assert.assertEquals(rowCount + 2, tq.getRowCount(notypes_tablename));
 	
-		
+		// test inserting null
+		bq.insertTuple(notypes_tablename, new String[] {null, null});
+		Assert.assertEquals(rowCount + 3, tq.getRowCount(notypes_tablename));
 	}
 	
 	@Test
 	public void deleteTest() throws Exception {
+		// delete nulls
+		bq.deleteTuple(notypes_tablename, new String[] {"test_id IS NULL"}, "OR");
+		
 		// insert a tuple
 		bq.insertTuple2(types_tablename, TYPES_SCHEMA, new String[] {"10", "Mike", "01-DEC-2005"});
 		int rowCount = tq.getRowCount(types_tablename);

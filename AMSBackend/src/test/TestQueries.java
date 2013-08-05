@@ -31,6 +31,7 @@ public class TestQueries {
 		try {
 			Statement s = con.createStatement();
 			ResultSet rs = s.executeQuery("SELECT COUNT(*) FROM " + tableName);
+			con.commit();
 			
 			while (rs.next()) {
 				return rs.getInt(1);
@@ -62,7 +63,6 @@ public class TestQueries {
 				System.out.println("");
 			}
 		} catch (SQLException e) {
-			rollback();
 			e.printStackTrace();
 		}
 		
@@ -75,14 +75,12 @@ public class TestQueries {
 		try {
 			s = con.createStatement();
 			ResultSet rs = s.executeQuery("SELECT table_name FROM user_tables");
-			con.commit();
 
 			while (rs.next()) {
 				tables.add(rs.getString(1));
 			}
 			
 		} catch (SQLException e) {
-			rollback();
 			e.printStackTrace();
 		}
 		

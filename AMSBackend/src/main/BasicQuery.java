@@ -4,25 +4,29 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.UnknownFormatConversionException;
+
+import javax.lang.model.type.UnknownTypeException;
 
 
 // We need to import the java.sql package to use JDBC
 
 public class BasicQuery 
 {		
-	private Connection con = null;
+	private static Connection con = null;
 	private static final String url = "jdbc:oracle:thin:@dbhost.ugrad.cs.ubc.ca:1522:ug";
-	private static final String username = "";
-	private static final String password = "";
+	private static final String username = "ora_m0h7";
+	private static final String password = "a70054093";
 
 	/**
 	 * If no connection has been made to database, will start a new one
 	 * @return Connection
 	 */
-	public Connection getConnection()
+	public static Connection getConnection()
 	{
 		try {
 
@@ -56,7 +60,12 @@ public class BasicQuery
 			String q = "INSERT INTO " + tableName + " values (";
 			
 			for (int i=0; i<tuple.length; i++) {
-				q += "\'" + tuple[i] + "\', ";
+				if (tuple[i] == null) {
+					q += "null ,";
+				} else {
+					q += "\'" + tuple[i] + "\', ";
+				}
+				
 			}
 			q = q.substring(0, q.lastIndexOf(",")) + ")";
 			
@@ -79,13 +88,13 @@ public class BasicQuery
 	 * @param tuple Array of String values (must be in order of table columns)
 	 * @throws Exception if schema type is unrecognized
 	 */
-	public void insertTuple2(String tableName, LinkedHashMap<String, String> schema, String[] tuple) throws Exception {
+	public void insertTuple2(String tableName, LinkedHashMap<String, String> schema, String[] tuple) {
 		PreparedStatement ps;
 		int paramIndex = 1;
 		
 		// check that there are enough values for this table
 		if (tuple.length != schema.size()) {
-			throw new Exception("Not enough values for table " + tableName + 
+			throw new UnknownFormatConversionException("Not enough values for table " + tableName + 
 					". Please check your values." );
 		}
 		
@@ -105,7 +114,9 @@ public class BasicQuery
 					String type = schema.get(col).toUpperCase();		// get the data type 
 					String val = tuple[paramIndex-1];						// get the value
 					
-					if (type.equals("NUMBER")) {
+					if (val == null) {
+						ps.setObject(paramIndex, null);
+					} else if (type.equals("NUMBER")) {
 						ps.setInt(paramIndex, Integer.parseInt(val));
 					} else if (type.equals("STRING")) {
 						ps.setString(paramIndex, val);
@@ -115,7 +126,7 @@ public class BasicQuery
 						Date d = formatter.parse(val);						
 						ps.setDate(paramIndex, new java.sql.Date(d.getTime()));
 					} else {
-						throw new Exception("Unrecognized type in insertTuple: " + type);
+						throw new UnknownFormatConversionException("Unrecognized type in insertTuple: " + type);
 					}			
 					
 					paramIndex++;	
@@ -126,6 +137,8 @@ public class BasicQuery
 				
 			} catch (SQLException e) {
 				rollback();
+				e.printStackTrace();
+			} catch (ParseException e) {
 				e.printStackTrace();
 			} 
 	}
