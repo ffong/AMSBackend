@@ -8,8 +8,8 @@ public class ConnectionService {
 	
 	private static Connection con = null;
 	private final static String URL = "jdbc:oracle:thin:@dbhost.ugrad.cs.ubc.ca:1522:ug";
-	private final static String USER = "ora_m0h7";
-	private final static String PASSWORD = "a70054093";
+	private final static String USER = "";
+	private final static String PASSWORD = "";
 	
 	public ConnectionService() {
 
