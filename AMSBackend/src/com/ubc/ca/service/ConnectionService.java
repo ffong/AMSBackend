@@ -10,23 +10,13 @@ public class ConnectionService {
 	private final static String URL = "jdbc:oracle:thin:@dbhost.ugrad.cs.ubc.ca:1522:ug";
 	private final static String USER = "";
 	private final static String PASSWORD = "";
-	
-	public ConnectionService() {
 
-		try {
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		con = getConnection();
-		// Class.forName("oracle.jdbc.driver.OracleDriver");
-		
-	}
 	
 	// only creates one connection
 	public static Connection getConnection() {
 		try {
 			if (con == null) {
+				DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 				con = DriverManager.getConnection(URL, USER, PASSWORD);
 				System.out.println("Connected to database.");
 			}

@@ -14,27 +14,18 @@ public class Item {
 	private String title;
 	private String category;
 	private String UPC;
+	private String company;
 	private int quantity;
 	private float price;
+	
+	// extra variables for reports
 	private float totalPrice;
+	private int qtySold;
 	
 	
 	// Holds any error message to be displayed encountered during db transaction 
 	
 	private String errorMessage;
-	
-	public Item() {
-
-	}
-	
-	public Item(String upc, String category, int quantity, float price) {
-		this.category = category;
-		this.UPC = upc;
-		this.quantity = quantity;
-		this.price = price;
-		this.totalPrice = quantity * price;
-	}
-	
 	
 	public String getErrorMessage() {
 		return errorMessage;
@@ -70,6 +61,12 @@ public class Item {
 	public void setCategory(String category) {
 		this.category = category;
 	}
+	public String getCompany() {
+		return company;
+	}
+	public void setCompany(String company) {
+		this.company = company;
+	}
 	public String getUPC() {
 		return UPC;
 	}
@@ -89,6 +86,14 @@ public class Item {
 
 	public void setTotalPrice(float totalPrice) {
 		this.totalPrice = totalPrice;
+	}
+
+	public int getQtySold() {
+		return qtySold;
+	}
+
+	public void setQtySold(int qtySold) {
+		this.qtySold = qtySold;
 	}
 	
 
