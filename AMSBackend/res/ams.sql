@@ -153,6 +153,36 @@ insert into PurchaseItem values (6, '10', 1);
 insert into PurchaseItem values (7, '15', 2);
 insert into PurchaseItem values (2, '20', 2);
 
+/* daily sales report */
+insert into Customer values ('ssnake', 'David', 'Philanthropy Nomad Airship', 'plissken', '5551043');
+insert into Customer values ('Scott', 'Scott Summers', '677 Xavier Academy', 'cyclops', '9993213');
+insert into Customer values ('MJ', 'Mary Jane Watson', '34 Broadway St.', 'spidey', '2119983');
+
+insert into Purchase values (9, '01-AUG-2013', 'ssnake', 75648487383023, '01-JAN-2019', '18-JAN-2013', null);
+insert into Purchase values (10, '01-AUG-2013', 'Scott', null, null, null, null);
+insert into Purchase values (11, '01-AUG-2013', 'MJ', 11183763336337, '15-SEP-2016', '05-APR-2013', '04-APR-2013');
+
+insert into Item values ('2244', 'Beethoven''s Ninth', 'DVD', 'classical', 'The Classical Music Company', 2012, 10.50, 25);
+insert into Item values ('2555', 'The Four Seasons', 'CD', 'classical', 'The Classical Music Company', 2012, 5.00, 5);
+insert into Item values ('3455', 'Grand Waltz Brilliante', 'DVD', 'classical', 'The Classical Music Company', 2012, 20.00, 30);
+insert into Item values ('1255', 'White Album', 'CD', 'pop', 'The Beatles', 2012, 20.00, 60);
+insert into Item values ('5666', 'Billie Jean', 'DVD', 'pop', 'Black or White', 2012, 10.00, 35);
+insert into Item values ('1244', 'Dark Side of the Moon', 'DVD', 'rock', 'Pink Floyd Co.', 2012, 2.50, 12);
+insert into Item values ('8844', 'Iron Maiden', 'DVD', 'rock', 'ROCK MUSIC INC.', 2012, 5.00, 65);
+
+insert into PurchaseItem values (9, '2244', 2);
+insert into PurchaseItem values (10, '2244', 6);
+insert into PurchaseItem values (11, '2244', 2);
+insert into PurchaseItem values (9, '2555', 2);
+insert into PurchaseItem values (11, '2555', 3);
+insert into PurchaseItem values (11, '3455', 1);
+insert into PurchaseItem values (10, '1255', 5);
+insert into PurchaseItem values (9, '5666', 10);
+insert into PurchaseItem values (10, '1244', 20);
+insert into PurchaseItem values (10, '8844', 20);
+insert into PurchaseItem values (11, '8844', 20);
+insert into PurchaseItem values (9, '8844', 10);
+
 grant select on item to public;
 grant select on returnitem to public;
 grant select on leadsinger to public;

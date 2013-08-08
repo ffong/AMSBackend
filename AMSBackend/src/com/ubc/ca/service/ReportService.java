@@ -25,7 +25,8 @@ public class ReportService {
 				"SELECT I.upc, item_category, item_price, SUM(quantity) AS units " +
 				"FROM Item I, Purchase P, PurchaseItem PI " +
 				"WHERE I.upc = PI.upc AND P.receiptId = PI.receiptId AND P.purchase_date = ? " +
-				"GROUP BY I.upc, item_category, item_price");
+				"GROUP BY I.upc, item_category, item_price " +
+				"ORDER BY item_category");
 		
 		java.sql.Date jday = new java.sql.Date(d.getTime());
 		ps.setDate(1, jday);

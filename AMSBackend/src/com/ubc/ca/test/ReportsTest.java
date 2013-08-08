@@ -29,9 +29,10 @@ public class ReportsTest {
 	public void dailyReportTest() {
 		try {
 			ReportService rs = new ReportService();
-			Date d = new SimpleDateFormat("dd-MMM-yyyy").parse("10-Aug-2013");
+			Date d = new SimpleDateFormat("dd-MMM-yyyy").parse("01-Aug-2013");
 			List<Item> items = rs.generateDailySalesReport(d);
 			printDailyReport(items);
+			System.out.println("\n");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -43,9 +44,11 @@ public class ReportsTest {
 	public void bestSellerReportTest() {
 		try {
 			ReportService rs = new ReportService();
-			Date d = new SimpleDateFormat("dd-MMM-yyyy").parse("13-Aug-2013");
+			Date d = new SimpleDateFormat("dd-MMM-yyyy").parse("01-Aug-2013");
 			List<Item> items = rs.generateTopSellersReport(d, 3);
-			printTopSellerReport(items);
+			printTopSellerReport(items);			
+			System.out.println("\n");
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
