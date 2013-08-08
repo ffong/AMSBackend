@@ -7,6 +7,7 @@ drop table purchase;
 drop table customer;
 drop table item;
 drop sequence receiptid;
+drop sequence retid;
 
 ALTER SESSION SET NLS_DATE_FORMAT = 'DD-MON-YYYY';
 
@@ -97,6 +98,13 @@ create table return (
 		REFERENCES purchase(receiptid)
 		ON DELETE CASCADE
 ); 
+
+create sequence retid 
+	MINVALUE 1
+	START WITH 1
+	INCREMENT BY 1
+	CACHE 10
+;
 
 create table returnitem (
 	upc varchar2(10) not null,

@@ -18,6 +18,7 @@ public class ConnectionService {
 			if (con == null) {
 				DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 				con = DriverManager.getConnection(URL, USER, PASSWORD);
+				con.setAutoCommit(false);
 				System.out.println("Connected to database.");
 			}
 		} catch (SQLException e) {
