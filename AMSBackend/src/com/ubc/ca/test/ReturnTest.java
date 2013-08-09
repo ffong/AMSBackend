@@ -77,32 +77,58 @@ public class ReturnTest {
 	}
 	
 	@Test
-	public void invalidDateReturnTest(){
+	public void invalidDateReturnTest() throws SQLException{
+		int start_stock = 0;
 		try {
+			start_stock = getStock("15");
 			rs.checkAndProcessReturn(1, 2, "15");
 			Assert.fail("Date should be invalid.");
 		}
 		catch (Exception e) {
 			Assert.assertTrue(e.getMessage().contains("Return is invalid"));
+			Assert.assertEquals(start_stock, getStock("15"));
 		}
 	}
 	
 	@Test
-	public void invalidQuantityReturnTest(){
+	public void invalidQuantityReturnTest() throws SQLException{
+		int start_stock = 0;
 		try {
+			start_stock = getStock("15");
 			rs.checkAndProcessReturn(1, 5, "15");
 			Assert.fail("Quantity should be invalid.");
 		}
 		catch (Exception e) {
+			Assert.assertEquals(start_stock, getStock("15"));
 			Assert.assertTrue(e.getMessage().contains("Returning more items than purchased"));
 		}
 	}
 	
 	@Test
 	public void validReturnTest() {
+		int start_stock = 0;
 		try {
-			Return r = new Return(8, "20", 2);
+			start_stock = getStock("5666");
+			Return r = new Return(9, "5666", 10);
 			r.saveReturn();
+
+			Assert.assertEquals(start_stock + 10, getStock("5666"));
+			Assert.assertTrue(checkReturnExists(r));
+			
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void validReturnTest2() {
+		int start_stock = 0;
+		try {
+			start_stock = getStock("25");
+			Return r = new Return(5, "25", 4);
+			r.saveReturn();
+
+			Assert.assertEquals(start_stock + 4, getStock("25"));
 			Assert.assertTrue(checkReturnExists(r));
 			
 		} catch (Exception e) {
@@ -129,5 +155,17 @@ public class ReturnTest {
 		ResultSet rs = ps.executeQuery();		
 		
 		return rs.next();
+	}
+	
+	private int getStock(String upc) throws SQLException {
+		Connection con = ConnectionService.getConnection();
+		PreparedStatement ps = con.prepareStatement(
+				"SELECT item_stock " +
+				"FROM Item " +
+				"WHERE upc=?");
+		ps.setString(1, upc);
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		return rs.getInt(1);
 	}
 }

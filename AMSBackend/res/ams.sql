@@ -127,7 +127,7 @@ insert into Customer values ('Flora', 'Flora Fong', '321 Partridge Rd.', 'passwo
 insert into Customer values ('Gary', 'Gary Oak', '2 Pallet Town.', 'password', '123213');
 insert into Customer values ('Alice', 'Alice Tiddel', '25 Worcestershire', 'password', '123213');
 
-insert into Purchase values (1, '10-AUG-2013', 'Gary', 0000012321301234, '01-MAY-2015', null, null);
+insert into Purchase values (1, '10-JUL-2013', 'Gary', 0000012321301234, '01-MAY-2015', null, null);
 insert into Purchase values (2, '11-AUG-2013', 'Gary', 0000012321301234, '01-MAY-2015', null, null);
 insert into Purchase values (3, '12-AUG-2013', 'Flora', 0000012321301234, '01-MAY-2015', '01-MAY-2015', '01-MAY-2015');
 insert into Purchase values (4, '13-AUG-2013', 'Jon', 0000012321301234, '01-MAY-2015', null, null);

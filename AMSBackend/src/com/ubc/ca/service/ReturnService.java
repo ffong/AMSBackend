@@ -13,6 +13,7 @@ import com.ubc.ca.exception.ReturnException;
 public class ReturnService {
 	
 	private static Connection con;
+	private ItemService is;
 	
 	/**
 	 * Main Return method, checks if the return is valid, then saves to database
@@ -26,6 +27,7 @@ public class ReturnService {
 	
 	public ReturnService() {
 		con = ConnectionService.getConnection();
+		is = new ItemService();
 	}
 	
 	/**
@@ -54,7 +56,7 @@ public class ReturnService {
 			ResultSet rs = ps.executeQuery();
 			
 			if (!rs.next()) {
-				throw new Exception("ERROR: No such purchase exists.");
+				throw new ReturnException("ERROR: No such purchase exists.");
 				
 			} else {				
 				// get data
@@ -65,7 +67,7 @@ public class ReturnService {
 				
 				// make sure not returning more than was bought
 				if (qtyReturned > qty) {
-					throw new Exception("ERROR: Returning more items than purchased.");
+					throw new ReturnException("Returning more items than purchased.");
 				}
 	
 				// get the current date from the database
@@ -73,16 +75,17 @@ public class ReturnService {
 				
 				// check if return is within valid date range
 				if (isValidReturn(purchaseDate, returnDate)) {		
-					retid = processReturn(receiptid, returnDate, upc, qtyReturned);				
+					// insert into tables and update stock
+					retid = processReturn(receiptid, returnDate, upc, qtyReturned);	
+					is.UpdateItem(upc, qty);
 					printReturn(price, cardno, qty, qtyReturned);	
 					
 				} else {
-					throw new Exception("Return is invalid. Over 15 days have passed.");
+					throw new ReturnException("Return is invalid. Over 15 days have passed.");
 				}
 			}		
 		} catch (SQLException e) {
-			System.out.println("Could not process return");
-			e.printStackTrace();
+			throw new ReturnException("Could not process return.");
 		}
 		return retid;	
 	}
@@ -173,17 +176,18 @@ public class ReturnService {
 	 * @return current date
 	 * @throws Exception
 	 */
-	private java.sql.Date getCurrentDate() throws Exception {
+	private java.sql.Date getCurrentDate() {
 		java.sql.Date returnDate = null;
 		
 		try {
 			PreparedStatement date_query = con.prepareStatement("SELECT sysdate FROM dual");
 			ResultSet date_result = date_query.executeQuery();
-			while (date_result.next()) {
+			if (date_result.next()) {
 				returnDate = date_result.getDate(1);
 			}
 		} catch (SQLException e) {
-			throw new Exception("Could not retrieve sysdate.");
+			System.out.println("Could not retrieve sysdate.");
+			e.printStackTrace();
 		}
 		return returnDate;
 	}
