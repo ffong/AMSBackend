@@ -303,6 +303,37 @@ public class ProductService {
 		return receiptId;
 	}
 	
+	/**
+	 * 
+	 * @param date
+	 * @param receiptid
+	 * @throws SQLException
+	 */
+	public void setDeliveryDate ( Date date, int receiptid ) throws SQLException {
+
+		Connection con= ConnectionService.getConnection();
+		
+		String query1 ="SELECT * FROM purchase WHERE receiptid = ?";
+		PreparedStatement query_ps1=con.prepareStatement(query1);
+		query_ps1.setInt(1, receiptid);
+		
+		ResultSet rs = query_ps1.executeQuery();
+		if (!rs.next()) {
+			System.out.println("receiptid not in database");
+			return;
+		}
+		
+		String query="UPDATE purchase SET delivery_date = ? WHERE receiptid = ?";
+		PreparedStatement query_ps=con.prepareStatement(query);
+		
+		query_ps.setDate(1, date);
+		query_ps.setInt(2, receiptid);
+		query_ps.executeQuery();
+		
+		con.commit();
+
+	}
+	
 	public Calendar getExpectedDate() throws SQLException, ConnectException
 	{
 		Connection con= ConnectionService.getConnection();
