@@ -170,6 +170,14 @@ insert into Item values ('5666', 'Billie Jean', 'DVD', 'pop', 'Black or White', 
 insert into Item values ('1244', 'Dark Side of the Moon', 'DVD', 'rock', 'Pink Floyd Co.', 2012, 2.50, 12);
 insert into Item values ('8844', 'Iron Maiden', 'DVD', 'rock', 'ROCK MUSIC INC.', 2012, 5.00, 65);
 
+INSERT INTO "ITEM" VALUES ('1', 'Eragon', 'cd', 'rock', 'test', 2000, 35, 46);
+INSERT INTO "ITEM" VALUES ('2', 'Crazy frog', 'dvd', 'pop', 'test', 2001, 53.50, 82);
+INSERT INTO "ITEM" VALUES ('3', 'Moon', 'cd', 'rap', 'test', 2002, 25, 50);
+INSERT INTO "ITEM" VALUES ('4', 'Crazy', 'dvd', 'country', 'test', 2003, 27, 48);
+INSERT INTO "ITEM" VALUES ('5', 'Found It', 'cd', 'new age ', 'test', 2004, 30, 50);
+INSERT INTO "ITEM" VALUES ('7', 'Gear up', 'dvd', 'instrumental', 'test', 2005, 31, 50);
+INSERT INTO "ITEM" VALUES ('8', 'vande matram', 'cd', 'rock', 'test', 2007, 32, 43);
+
 insert into PurchaseItem values (9, '2244', 2);
 insert into PurchaseItem values (10, '2244', 6);
 insert into PurchaseItem values (11, '2244', 2);
@@ -191,3 +199,7 @@ grant select on return to public;
 grant select on purchaseitem to public;
 grant select on purchase to public;
 grant select on customer to public;
+
+
+
+
