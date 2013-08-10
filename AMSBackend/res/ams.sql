@@ -201,5 +201,9 @@ grant select on purchase to public;
 grant select on customer to public;
 
 
-
+create or replace trigger insert_login 
+after insert on customer for each row 
+begin 
+insert into login values(:new.cid,:new.cust_passowrd,'customer');
+end;
 
