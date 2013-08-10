@@ -35,7 +35,7 @@ create table leadsinger (
 
 create table hassong (
 	upc varchar2(10) not null,
-	song_title varchar2(255) not null,
+	title varchar2(255) not null,
 	CONSTRAINTS hassong_pk 
 		PRIMARY KEY (upc, song_title),
 	CONSTRAINTS hassong_upc_fk
@@ -89,8 +89,8 @@ create table purchaseitem (
 		ON DELETE CASCADE
 );
  
-create table return (
-	retid number(7) not null PRIMARY KEY,
+create table ams_return (
+	returnid number(7) not null PRIMARY KEY,
 	return_date date,
 	receiptid number(7),
 	CONSTRAINTS return_receiptid_fk
@@ -108,7 +108,7 @@ create sequence retid
 
 create table returnitem (
 	upc varchar2(10) not null,
-	retid number(7) not null,
+	returnid number(7) not null,
 	quantity number(7),
 	CONSTRAINTS returnitem_pk
 		PRIMARY KEY (upc, retid),
