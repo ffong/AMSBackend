@@ -37,7 +37,7 @@ create table hassong (
 	upc varchar2(10) not null,
 	title varchar2(255) not null,
 	CONSTRAINTS hassong_pk 
-		PRIMARY KEY (upc, song_title),
+		PRIMARY KEY (upc, title),
 	CONSTRAINTS hassong_upc_fk
 		FOREIGN KEY(upc)
 		REFERENCES item(upc)
@@ -111,14 +111,14 @@ create table returnitem (
 	returnid number(7) not null,
 	quantity number(7),
 	CONSTRAINTS returnitem_pk
-		PRIMARY KEY (upc, retid),
+		PRIMARY KEY (upc, returnid),
 	CONSTRAINTS returnitem_upc_fk
 		FOREIGN KEY(upc)
 		REFERENCES item(upc)
 		ON DELETE CASCADE,
 	CONSTRAINTS returnitem_retid_fk
-		FOREIGN KEY(retid)
-		REFERENCES return(retid)
+		FOREIGN KEY(returnid)
+		REFERENCES ams_return(returnid)
 		ON DELETE CASCADE
 );
 
